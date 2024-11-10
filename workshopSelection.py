@@ -58,16 +58,28 @@ for ID, person in enumerate(signups):
 		person[15:18]
 	]
 
+	# Deal with name changes
+	for y, i in enumerate(choices):
+		for x, j in enumerate(i):
+			if j == 'Game Development with Python':
+				choices[y][x] = 'Puzzle Prodigy: Code Your Wordle Game with Python'
+			elif j == 'Game Development with Minecraft':
+				choices[y][x] = 'Minecraft Mastery: Crafting Your Own Adventure'
+
 	arrangement = []
 	
 	for ind, session in enumerate(choices):
 		sessSched = schedule[ind] # current session's schedule
 
-		chosen = [i for i in session if len(sessSched[i]) < MAXPEOPLE and i not in arrangement]
+		chosen = [i for i in session 
+					if len(sessSched[i]) < MAXPEOPLE and  # Check if class full
+					i not in arrangement and # Make sure not previously selected
+					i in CLASSES[ind] # Make sure valid class
+				]
 
 		if len(chosen) == 0: # chosen sessions are full
-			for sessName, people in sessSched.items():
-				if len(people) < MAXPEOPLE:
+			for sessName, sessPeople in sessSched.items():
+				if len(sessPeople) < MAXPEOPLE:
 					chosen = sessName
 					break
 
