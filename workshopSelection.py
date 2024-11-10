@@ -10,6 +10,7 @@ MAXPEOPLE = 25 # max people per session
 
 CSVDELIMITER = '\t'
 
+# Parse file
 with open(PATHNAME) as file:
 	signups = [[j.strip() for j in i.strip().split(CSVDELIMITER)[1:] if j.strip() != ''] for i in file.readlines()[1:]]
 
@@ -51,10 +52,10 @@ for ID, person in enumerate(signups):
 	email, name = person[:2]
 	
 	choices = [
-		person[4:7],
-		person[7:10],
-		person[10:13],
-		person[13:16]
+		person[6:9],
+		person[9:12],
+		person[12:15],
+		person[15:18]
 	]
 
 	arrangement = []
@@ -92,3 +93,5 @@ print('\n' * 5)
 
 print('-- PEOPLE --')
 pprint(people)
+
+# Export later
