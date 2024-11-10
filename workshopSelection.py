@@ -90,6 +90,7 @@ for ID, person in enumerate(signups):
 		arrangement.append(chosen)
 	
 	personData = {
+		'id': ID,
 		'email': email,
 		'name': name,
 		'schedule': arrangement
