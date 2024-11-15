@@ -1,5 +1,5 @@
-CURRENTPPL = 'currPpl.txt'
-EMAILSEND = 'emailSend.txt'
+CURRENTPPL = './emailSending/currPpl.txt'
+EMAILSEND = './emailSending/emailSend.txt'
 
 def parseFile(fileName) -> list:
 	with open(fileName, 'r') as file:
@@ -10,4 +10,4 @@ fullTo = parseFile(EMAILSEND)
 
 sendTo = list(set([i for i in fullTo if i not in exclude]))
 
-print(' '.join(sendTo))
+print(', '.join(sendTo))
