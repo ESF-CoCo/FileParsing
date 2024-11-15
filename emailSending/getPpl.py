@@ -8,6 +8,6 @@ def parseFile(fileName) -> list:
 exclude = parseFile(CURRENTPPL)
 fullTo = parseFile(EMAILSEND)
 
-sendTo = [i for i in fullTo if i not in exclude]
+sendTo = list(set([i for i in fullTo if i not in exclude]))
 
 print(' '.join(sendTo))
