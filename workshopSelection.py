@@ -21,7 +21,7 @@ with open(EXCLUDEPATHNAME, 'r') as file:
 
 	for i in file.readlines():
 		person = tuple(i.strip().split(' '))[:2] 
-		exclude[person[0].lower()].append(person[1])
+		exclude[person[0].lower()].extend(person[1].split(','))
 
 CLASSES = [
 	[
@@ -80,10 +80,9 @@ for ID, person in enumerate(signups):
 	arrangement = []
 	
 	for ind, session in enumerate(choices):
-		if email.lower() in exclude.keys():
-			if session in exclude[email.lower()]:
-				arrangement.append('')
-				break
+		if session in exclude[email.lower()]:
+			arrangement.append('')
+			break
 
 		sessSched = schedule[ind] # current session's schedule
 
