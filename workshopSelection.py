@@ -2,6 +2,7 @@
 # Also make sure to export as a TSV instead of a CSV
 
 from collections import defaultdict
+from hashlib import sha256
 
 
 PATHNAME = "signups.tsv" # modify based on your file path
@@ -40,7 +41,7 @@ CLASSES = [
 		'Fun with AI: Face Detection with Javascript',
 		'Puzzle Prodigy: Code Your Wordle Game with Python',
 		'Java Object Oriented Programming',
-		'Automate your Tasks with Google Gemini',
+		'Level Up Your Brain with Google AI',
 		'Tech Entrepreneurship Essentials'
 	]  # Session 4
 ]
@@ -65,6 +66,8 @@ for ID, person in enumerate(signups):
 				choices[y][x] = 'Puzzle Prodigy: Code Your Wordle Game with Python'
 			elif j == 'Game Development with Minecraft':
 				choices[y][x] = 'Minecraft Mastery: Crafting Your Own Adventure'
+			elif j == 'Automate your Tasks with Google Gemini':
+				choices[y][x] = 'Level Up Your Brain with Google AI'
 
 	arrangement = []
 	
@@ -89,8 +92,11 @@ for ID, person in enumerate(signups):
 		schedule[ind][chosen].append(name)
 		arrangement.append(chosen)
 	
+	hashed = sha256((str(ID)).encode('utf-8')).hexdigest()
+	uuid = hashed[:8] + '-' + hashed[8:12] + '-' + hashed[12:16] + '-' + hashed[16:20] + '-' + hashed[20:32]
+	
 	personData = {
-		'id': ID,
+		'id': uuid,
 		'email': email,
 		'name': name,
 		'schedule': arrangement
