@@ -6,6 +6,7 @@ from hashlib import sha256
 
 
 PATHNAME = "signups.tsv" # modify based on your file path
+EXCLUDEPATHNAME = "exclude.txt"
 
 MAXPEOPLE = 25 # max people per session
 
@@ -14,6 +15,13 @@ CSVDELIMITER = '\t'
 # Parse file
 with open(PATHNAME) as file:
 	signups = [[j.strip() for j in i.strip().split(CSVDELIMITER)[1:] if j.strip() != ''] for i in file.readlines()[1:]]
+
+with open(EXCLUDEPATHNAME, 'r') as file:
+	exclude = defaultdict(list)
+
+	for i in file.readlines():
+		person = tuple(i.strip().split(' '))[:2] 
+		exclude[person[0].lower()].append(person[1])
 
 CLASSES = [
 	[
@@ -72,6 +80,11 @@ for ID, person in enumerate(signups):
 	arrangement = []
 	
 	for ind, session in enumerate(choices):
+		if email.lower() in exclude.keys():
+			if session in exclude[email.lower()]:
+				arrangement.append('')
+				break
+
 		sessSched = schedule[ind] # current session's schedule
 
 		chosen = [i for i in session 
