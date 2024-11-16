@@ -86,7 +86,7 @@ for ID, person in enumerate(signups):
 	arrangement = []
 	
 	for ind, session in enumerate(choices):
-		if session in exclude[email.lower()]:
+		if str(ind+1) in exclude[email.lower()]:
 			arrangement.append('')
 			break
 
