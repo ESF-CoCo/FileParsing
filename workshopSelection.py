@@ -3,10 +3,13 @@
 
 from collections import defaultdict
 from hashlib import sha256
+import json
 
 
 PATHNAME = "signups.tsv" # modify based on your file path
 EXCLUDEPATHNAME = "exclude.txt"
+
+PARTICIPANTSFILE = "participants.json"
 
 MAXPEOPLE = 25 # max people per session
 
@@ -22,6 +25,9 @@ with open(EXCLUDEPATHNAME, 'r') as file:
 	for i in file.readlines():
 		person = tuple(i.strip().split(' '))[:2] 
 		exclude[person[0].lower()].extend(person[1].split(','))
+
+with open(PARTICIPANTSFILE, 'r') as file:
+	participants = json.load(file)
 
 CLASSES = [
 	[
@@ -111,6 +117,7 @@ for ID, person in enumerate(signups):
 		'id': uuid,
 		'email': email,
 		'name': name,
+		'role': 'participant',
 		'schedule': arrangement
 	}
 
@@ -125,4 +132,8 @@ print('\n' * 5)
 print('-- PEOPLE --')
 pprint(people)
 
-# Export later
+# Exporting data
+participants["people"].extend(people)
+
+with open(PARTICIPANTSFILE, 'w') as file:
+	json.dump(participants, file, indent='\t')
