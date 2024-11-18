@@ -65,6 +65,8 @@ people = []
 
 for ID, person in enumerate(signups):
 	email, name = person[:2]
+
+	name = ' '.join(list(map(lambda x: x.lower().capitalize(), name.split(' '))))
 	
 	choices = [
 		person[6:9],
