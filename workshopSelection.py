@@ -104,12 +104,12 @@ for ID, person in enumerate(signups):
 	for ind, session in enumerate(choices):
 		if str(ind+1) in exclude[email.lower()]:
 			arrangement.append('')
-			break
+			continue
 
 		sessSched = schedule[ind] # current session's schedule
 
 		chosen = [i for i in session 
-					if len(sessSched[i]) < MAXPEOPLE and  # Check if class full
+					if len(sessSched[i]) < MAXPEOPLE and # Check if class full
 					i not in arrangement and # Make sure not previously selected
 					i in CLASSES[ind] # Make sure valid class
 				]
@@ -140,7 +140,7 @@ for ID, person in enumerate(signups):
 	people.append(personData)
  
  
-workshopNumbers = [[len(j) for j in CLASSES[i]] for i in range(4)]
+workshopNumbers = [[len(schedule[sess][workshop]) for workshop in CLASSES[sess]] for sess in range(4) ]
 
 from pprint import pprint
 print('-- SCHEDULE --')
@@ -150,6 +150,8 @@ print('\n' * 5)
 
 print('-- PEOPLE --')
 pprint(people)
+
+print()
 
 print('-- WORKSHOP NUMBERS --')
 pprint(workshopNumbers)
