@@ -4,6 +4,7 @@
 from collections import defaultdict
 from hashlib import sha256
 import json
+from pprint import pprint
 
 
 PATHNAME = "signups.tsv" # modify based on your file path
@@ -18,6 +19,8 @@ CSVDELIMITER = '\t'
 # Parse file
 with open(PATHNAME) as file:
 	signups = [[j.strip() for j in i.strip().split(CSVDELIMITER)[1:] if j.strip() != ''] for i in file.readlines()[1:]]
+
+AMTPEOPLE = len(signups)
 
 with open(EXCLUDEPATHNAME, 'r') as file:
 	exclude = defaultdict(list)
@@ -59,6 +62,17 @@ CLASSES = [
 		'Tech Entrepreneurship Essentials'
 	]  # Session 4
 ]
+
+workshopLimits = defaultdict(lambda: MAXPEOPLE)
+
+LIMIT = [{wClass:workshopLimits[wClass] for wClass in CLASSES[i]} for i in range(4)]
+
+for y, session in enumerate(LIMIT):
+    if sum(list(session.values())) < AMTPEOPLE:
+        for workshop, val in session.items():
+            if val == MAXPEOPLE:
+                LIMIT[y][workshop] = abs(AMTPEOPLE - sum(list(session.values()))) + MAXPEOPLE
+                break
 
 schedule = [defaultdict(list) for _ in range(4)]
 people = []
@@ -124,6 +138,9 @@ for ID, person in enumerate(signups):
 	}
 
 	people.append(personData)
+ 
+ 
+workshopNumbers = [[len(j) for j in CLASSES[i]] for i in range(4)]
 
 from pprint import pprint
 print('-- SCHEDULE --')
@@ -134,8 +151,11 @@ print('\n' * 5)
 print('-- PEOPLE --')
 pprint(people)
 
+print('-- WORKSHOP NUMBERS --')
+pprint(workshopNumbers)
+
 # Exporting data
-participants["people"].extend(people)
+participants["participants"] = people
 
 with open(PARTICIPANTSFILE, 'w') as file:
 	json.dump(participants, file, indent='\t')
