@@ -65,14 +65,19 @@ CLASSES = [
 
 workshopLimits = defaultdict(lambda: MAXPEOPLE)
 
-LIMIT = [{wClass:workshopLimits[wClass] for wClass in CLASSES[i]} for i in range(4)]
+workshopLimits['Java Object Oriented Programming'] = 15
+workshopLimits['Raspberry Pi Basics'] = 20
+workshopLimits['Advanced Introduction to C++'] = 10
+workshopLimits['Robotics'] = 20
+
+LIMIT = [defaultdict(lambda: MAXPEOPLE, {wClass:workshopLimits[wClass] for wClass in CLASSES[i]}) for i in range(4)]
 
 for y, session in enumerate(LIMIT):
-    if sum(list(session.values())) < AMTPEOPLE:
-        for workshop, val in session.items():
-            if val == MAXPEOPLE:
-                LIMIT[y][workshop] = abs(AMTPEOPLE - sum(list(session.values()))) + MAXPEOPLE
-                break
+	if sum(list(session.values())) < AMTPEOPLE:
+		for workshop, val in session.items():
+			if val == MAXPEOPLE:
+				LIMIT[y][workshop] = abs(AMTPEOPLE - sum(list(session.values()))) + MAXPEOPLE
+				break
 
 schedule = [defaultdict(list) for _ in range(4)]
 people = []
@@ -109,17 +114,21 @@ for ID, person in enumerate(signups):
 		sessSched = schedule[ind] # current session's schedule
 
 		chosen = [i for i in session 
-					if len(sessSched[i]) < MAXPEOPLE and # Check if class full
+					if len(sessSched[i]) < LIMIT[ind][i] and # Check if class full
 					i not in arrangement and # Make sure not previously selected
-					i in CLASSES[ind] # Make sure valid class
+					i in CLASSES[ind]# Make sure valid class
 				]
 
 		if len(chosen) == 0: # chosen sessions are full
+			selected = False
 			for sessName, sessPeople in sessSched.items():
-				if len(sessPeople) < MAXPEOPLE:
+				if len(sessPeople) < LIMIT[ind][sessName] and (sessName not in arrangement):
 					chosen = sessName
+					selected = True
 					break
-
+			
+			if not selected:
+				raise SystemError(f'No workshop available for {name} in session {ind+1}')
 		else:
 			chosen = chosen[0] # set to first/top choice
 		
