@@ -9,6 +9,7 @@ from pprint import pprint
 
 PATHNAME = "signups.tsv" # modify based on your file path
 EXCLUDEPATHNAME = "exclude.txt"
+SUPPORTPATHNAME = "support.txt"
 
 PARTICIPANTSFILE = "participants.json"
 
@@ -31,6 +32,9 @@ with open(EXCLUDEPATHNAME, 'r') as file:
 
 with open(PARTICIPANTSFILE, 'r') as file:
 	participants = json.load(file)
+
+with open(SUPPORTPATHNAME, 'r') as file:
+    SUPPORT = [i.strip().lower() for i in file.readlines()]
 
 CLASSES = [
 	[
@@ -86,10 +90,14 @@ for y, session in enumerate(LIMIT):
 schedule = [defaultdict(list) for _ in range(4)]
 people = []
 
+amtSupport = 0
+
 for ID, person in enumerate(signups):
 	email, name = person[:2]
 
 	name = ' '.join(list(map(lambda x: x.lower().capitalize(), name.split(' '))))
+ 
+	if email.lower() in SUPPORT: amtSupport+=1
 	
 	choices = [
 		person[6:9],
@@ -120,7 +128,7 @@ for ID, person in enumerate(signups):
 		chosen = [i for i in session 
 					if len(sessSched[i]) < LIMIT[ind][i] and # Check if class full
 					i not in arrangement and # Make sure not previously selected
-					i in CLASSES[ind]  # Make sure valid class
+					i in CLASSES[ind] # Make sure valid class
 				]
 
 		if len(chosen) == 0: # chosen sessions are full
@@ -168,6 +176,10 @@ print()
 
 print('-- WORKSHOP NUMBERS --')
 pprint(workshopNumbers)
+
+print()
+
+print(f'{amtSupport=}')
 
 # Exporting data
 participants["participants"] = people
