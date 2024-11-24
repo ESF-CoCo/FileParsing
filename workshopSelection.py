@@ -69,8 +69,12 @@ workshopLimits['Java Object Oriented Programming'] = 15
 workshopLimits['Raspberry Pi Basics'] = 20
 workshopLimits['Advanced Introduction to C++'] = 10
 workshopLimits['Robotics'] = 20
+workshopLimits['Puzzle Prodigy: Code Your Wordle Game with Python'] = 20
+workshopLimits['How Algorithms Influence Consumerism'] = 15
 
 LIMIT = [defaultdict(lambda: MAXPEOPLE, {wClass:workshopLimits[wClass] for wClass in CLASSES[i]}) for i in range(4)]
+
+LIMIT[3]['Java Object Oriented Programming'] = 0
 
 for y, session in enumerate(LIMIT):
 	if sum(list(session.values())) < AMTPEOPLE:
@@ -116,7 +120,7 @@ for ID, person in enumerate(signups):
 		chosen = [i for i in session 
 					if len(sessSched[i]) < LIMIT[ind][i] and # Check if class full
 					i not in arrangement and # Make sure not previously selected
-					i in CLASSES[ind]# Make sure valid class
+					i in CLASSES[ind]  # Make sure valid class
 				]
 
 		if len(chosen) == 0: # chosen sessions are full
@@ -132,7 +136,7 @@ for ID, person in enumerate(signups):
 		else:
 			chosen = chosen[0] # set to first/top choice
 		
-		schedule[ind][chosen].append(name)
+		schedule[ind][str(chosen)].append(name)
 		arrangement.append(chosen)
 	
 	hashed = sha256((str(ID)).encode('utf-8')).hexdigest()
