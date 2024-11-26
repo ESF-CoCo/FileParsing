@@ -87,7 +87,7 @@ for y, session in enumerate(LIMIT):
 				LIMIT[y][workshop] = abs(AMTPEOPLE - sum(list(session.values()))) + MAXPEOPLE
 				break
 
-schedule = [defaultdict(list) for _ in range(4)]
+schedule = [{workshop:[] for workshop in CLASSES[i]} for i in range(4)]
 people = []
 
 amtSupport = 0
@@ -129,9 +129,9 @@ for ID, person in enumerate(signups):
 		sessSched = schedule[ind] # current session's schedule
 
 		chosen = [i for i in session 
-					if len(sessSched[i]) < LIMIT[ind][i] and # Check if class full
+					if i in CLASSES[ind] and # Check if class full
 					i not in arrangement and # Make sure not previously selected
-					i in CLASSES[ind] # Make sure valid class
+					len(sessSched[i]) < LIMIT[ind][i] # Make sure valid class
 				]
 
 		if len(chosen) == 0: # chosen sessions are full
