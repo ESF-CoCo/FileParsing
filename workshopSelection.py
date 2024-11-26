@@ -34,7 +34,7 @@ with open(PARTICIPANTSFILE, 'r') as file:
 	participants = json.load(file)
 
 with open(SUPPORTPATHNAME, 'r') as file:
-    SUPPORT = [i.strip().lower() for i in file.readlines()]
+	SUPPORT = [i.strip().lower() for i in file.readlines()]
 
 CLASSES = [
 	[
@@ -91,13 +91,16 @@ schedule = [defaultdict(list) for _ in range(4)]
 people = []
 
 amtSupport = 0
+supportAttending = []
 
 for ID, person in enumerate(signups):
 	email, name = person[:2]
 
 	name = ' '.join(list(map(lambda x: x.lower().capitalize(), name.split(' '))))
  
-	if email.lower() in SUPPORT: amtSupport+=1
+	if email.lower() in SUPPORT: 
+		amtSupport+=1
+		supportAttending.append(email)
 	
 	choices = [
 		person[6:9],
@@ -163,7 +166,6 @@ for ID, person in enumerate(signups):
  
 workshopNumbers = [[len(schedule[sess][workshop]) for workshop in CLASSES[sess]] for sess in range(4) ]
 
-from pprint import pprint
 print('-- SCHEDULE --')
 pprint(schedule)
 
@@ -180,9 +182,38 @@ pprint(workshopNumbers)
 print()
 
 print(f'{amtSupport=}')
+pprint(supportAttending)
+
 
 # Exporting data
 participants["participants"] = people
 
 with open(PARTICIPANTSFILE, 'w') as file:
 	json.dump(participants, file, indent='\t')
+
+print()
+
+print("-- CONSOLE --")
+
+while True:
+	cmd = input('> ').lower().strip()
+	
+	match cmd:
+		case 'exit':
+			exit()
+		case 'workshop_names':
+			wrkshp = input('Workshop Name: ')
+			while wrkshp not in [i for a in CLASSES for i in a]:
+				print('Invalid workshop. Please re-enter')
+				wrkshp = input('Workshop Name: ')
+			
+			for ind, session in enumerate(schedule):
+				if wrkshp in session.keys():
+					print(f'Session #{ind+1}: \n- {'\n- '.join(session[wrkshp])}')
+		case 'person_workshops':
+			name = ' '.join(list(map(lambda x: x.capitalize(), input('Student Name: ').lower().strip().split(' '))))
+   
+			for person in people:
+				if person['name'] == name:
+					pprint(person['schedule'])
+					break
