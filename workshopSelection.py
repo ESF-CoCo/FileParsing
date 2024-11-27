@@ -93,6 +93,33 @@ people = []
 amtSupport = 0
 supportAttending = []
 
+workshopPrerequesites = defaultdict(list, {
+	'Minecraft Mastery: Crafting Your Own Adventure': [
+		'Download Minecraft Education Edition on either a tablet or your laptop (Accounts provided during the workshop)'
+	],
+	'Puzzle Prodigy: Code Your Wordle Game with Python': [
+		'Python installed prior to the day',
+		'PyCharm Edu installed prior to the day'
+	],
+	'Java Object Oriented Programming': [
+		'Code editor/IDE installed prior to the day (Recommended to install VS Code)',
+  		'Java SDK installed prior to the day'
+	],
+	'Raspberry Pi Basics': [
+		'Thonny installed prior to the day',
+  		'Python installed prior to the day'
+	],
+	'Programming Browser Extensions': [
+		'Code editor/IDE installed prior to the day (Recommended to install VS Code)'
+	],
+	'Advanced Introduction to C++': [
+		'Code editor/IDE installed prior to the day (Recommended to install VS Code)'
+	],
+	'Level Up Your Brain with Google AI': [
+		'Please bring a mobile device or tablet as well to the day'
+	]
+})
+
 for ID, person in enumerate(signups):
 	email, name = person[:2]
 
@@ -153,13 +180,22 @@ for ID, person in enumerate(signups):
 	hashed = sha256((str(ID)).encode('utf-8')).hexdigest()
 	uuid = hashed[:8] + '-' + hashed[8:12] + '-' + hashed[12:16] + '-' + hashed[16:20] + '-' + hashed[20:32]
 	
+	workshopRequirements = []
+ 
+	for workshop in arrangement:
+		workshopRequirements.extend(workshopPrerequesites[workshop])
+
+	workshopRequirements = list(set(workshopRequirements))
+ 
 	personData = {
 		'id': uuid,
 		'email': email,
 		'name': name,
 		'role': 'participant',
-		'schedule': arrangement
+		'schedule': arrangement,
+		'prerequesites': workshopRequirements
 	}
+ 
 
 	people.append(personData)
  
@@ -191,6 +227,17 @@ participants["participants"] = people
 with open(PARTICIPANTSFILE, 'w') as file:
 	json.dump(participants, file, indent='\t')
 
+EXPORTCSV = 'mailmerge.csv'
+
+with open(EXPORTCSV, 'w+') as file:
+	file.write('Email,Name,Session 1,Session 2,Session 3,Workshop Requirements')
+
+	for ID, person in enumerate(people):
+		prerequesites = '|'.join(person['prerequesites'])
+
+
+# Output
+
 print()
 
 print("-- CONSOLE --")
@@ -209,7 +256,7 @@ while True:
 			
 			for ind, session in enumerate(schedule):
 				if wrkshp in session.keys():
-					print(f'Session #{ind+1}: \n- {'\n- '.join(session[wrkshp])}')
+					print(f'Session #{ind+1}: \n- {'\n- '.join(sorted(session[wrkshp]))}')
 		case 'person_workshops':
 			name = ' '.join(list(map(lambda x: x.capitalize(), input('Student Name: ').lower().strip().split(' '))))
    
