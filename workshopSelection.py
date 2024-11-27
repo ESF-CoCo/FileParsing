@@ -229,11 +229,12 @@ with open(PARTICIPANTSFILE, 'w') as file:
 
 EXPORTCSV = 'mailmerge.csv'
 
-with open(EXPORTCSV, 'w+') as file:
-	file.write('Email,Name,Session 1,Session 2,Session 3,Workshop Requirements')
+with open(EXPORTCSV, 'w') as file:
+	file.write('Email,Name,Session 1,Session 2,Session 3,Workshop Requirements,ID\n')
 
 	for ID, person in enumerate(people):
 		prerequesites = '|'.join(person['prerequesites'])
+		file.write(','.join([person['email'],person['name'],*person['schedule'],prerequesites,person['id']]) + '\n')
 
 
 # Output
