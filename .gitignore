@@ -167,3 +167,6 @@ cython_debug/
 *.json
 *.exe
 *.env
+*.png
+
+QRCode/
