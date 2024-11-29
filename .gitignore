@@ -168,5 +168,6 @@ cython_debug/
 *.exe
 *.env
 *.png
+*.ttf
 
 QRCode/
