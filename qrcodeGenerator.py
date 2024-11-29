@@ -5,7 +5,7 @@ FOLDER = 'QRCode/'
 PEOPLEFILE = 'participants.json'
 
 with open(PEOPLEFILE, 'r') as file:
-    people = json.load(file)['participants']
+    people = json.load(file)['people']
 
 for person in people:
     qr = qrcode.QRCode(
