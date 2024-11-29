@@ -43,7 +43,7 @@ for person in people:
     lanyard_path = os.path.join("PartFront", f"{person['id']}_lanyard.png")
     front.save(lanyard_path)
     print(f"Lanyard saved for {name} at {lanyard_path}")
-
+    
     back = Image.open(TEMPLATE_B)
     draw = ImageDraw.Draw(back)
 
