@@ -10,7 +10,7 @@ import PyPDF2
 FOLDER = "lanyards/"
 
 # Get a list of all image files in the front and back folders
-front_image_files = sorted([f for f in os.listdir(FOLDER) if f.endswith('_front.png')])
+front_image_files = sorted([f for f in os.listdir(FOLDER) if f.endswith('_1front.png')])
 back_image_files = sorted([f for f in os.listdir(FOLDER) if f.endswith('_back.png')])
 
 def create_page(image_files, folder_path, page_num, is_front=True, dpi=300):
@@ -42,7 +42,12 @@ def create_page(image_files, folder_path, page_num, is_front=True, dpi=300):
                 img = Image.open(img_path)
                 
                 # Calculate position
-                x = margin + col * (img_width + margin)
+                if is_front:
+                    x = margin + col * (img_width + margin)
+                else:
+                    # For back side, swap column positions
+                    x = width - margin - (col + 1) * (img_width + margin)
+                
                 y = height - margin - (row + 1) * (img_height + margin)
                 
                 # Save temporary image
