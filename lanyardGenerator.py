@@ -65,8 +65,6 @@ for person in people:
 			draw.text((415, 430), f"{schedule[2]}", fill="black", font=font)
 			draw.text((415, 470), f"{schedule[3]}", fill="black", font=font)
 
-			continue
-
 		case 'organizing':
 			role = person['title']
 			school = person['school']
@@ -85,7 +83,7 @@ for person in people:
 			if os.path.exists(qrcodePath):
 				qrcode = Image.open(qrcodePath).resize((275, 275))
 				front.paste(qrcode, (685, 305))
-
+			
 		case 'presenter':
 			role = person['role'].capitalize()
 			workshop = ' '.join(list(map(lambda x: x.lower().capitalize(), person['workshop'].split(' '))))
@@ -113,7 +111,7 @@ for person in people:
 			draw.text((590, 325), f"{schedule[1]}", fill="black", font=font)
 			draw.text((590, 405), f"{schedule[2]}", fill="black", font=font)
 			draw.text((590, 445), f"{schedule[3]}", fill="black", font=font)
-	
+			
 		case 'support' | 'photographer':  # Combined cases for similar handling
 			role = person['role'].capitalize()
 			school = person['school']
@@ -132,11 +130,11 @@ for person in people:
 			if os.path.exists(qrcodePath):
 				qrcode = Image.open(qrcodePath).resize((275, 275))
 				front.paste(qrcode, (685, 305))
-
+			
 		case _:
 			print(f'ERROR: Unknown role {person["role"]}')
    
-	lanyard_path = os.path.join(FOLDER, f"{person['id']}_front.png")
+	lanyard_path = os.path.join(FOLDER, f"{person['id']}_1front.png")
 	front.save(lanyard_path)
 	lanyard_path = os.path.join(FOLDER, f"{person['id']}_back.png")
 	back.save(lanyard_path)
