@@ -16,7 +16,7 @@ driver.get('https://mail.google.com/mail/u/0/#inbox')
 driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys(EMAIL)
 driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/c-wiz/div/div[3]/div/div[1]/div/div/button').click()
 
-sleep(7)
+sleep(10)
 
 driver.find_element(By.XPATH, '//*[@id="username"]').send_keys(USERNAME)
 driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(PASSWORD)
@@ -76,9 +76,9 @@ https://coco.esf.edu.hk/
  
 	driver.find_element(By.XPATH, '//input[@type="file"]').send_keys(certificate)
  
-	sleep(3)
+	sleep(5)
  
 	driver.find_element(By.XPATH, '//div[@aria-label="Send"]').click()
  
-	sleep(3)
+	sleep(5)
  
