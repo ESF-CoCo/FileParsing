@@ -1,3 +1,4 @@
 qrcode
 hashlib
 pprint
+selenium
