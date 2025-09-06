@@ -1,3 +1,4 @@
-pillow
 qrcode
-pyodbc
+hashlib
+pprint
+selenium

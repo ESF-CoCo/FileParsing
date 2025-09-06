@@ -171,6 +171,4 @@ cython_debug/
 *.ttf
 *.pdf
 
-!requirements.txt
-
 QRCode/
